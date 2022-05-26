@@ -17,6 +17,7 @@ import { MenuSidebarView } from '@components/common/UserNav'
 import type { Page } from '@commerce/types/page'
 import type { Category } from '@commerce/types/site'
 import type { Link as LinkProps } from '../UserNav/MenuSidebarView'
+import { useCallback } from 'react'
 
 const Loading = () => (
   <div className="w-80 h-80 flex items-center text-center justify-center p-3">
@@ -108,10 +109,20 @@ const Layout: React.FC<Props> = ({
 }) => {
   const { acceptedCookies, onAcceptCookies } = useAcceptCookies()
   const { locale = 'en-US' } = useRouter()
-  const navBarlinks = categories.slice(0, 2).map((c) => ({
-    label: c.name,
-    href: `/search/${c.slug}`,
-  }))
+
+  const toCategoryLinks = useCallback(
+    (c: Category) => ({
+      label: c.name,
+      href: `/search/${c.slug}`,
+    }),
+    []
+  )
+
+  const navBarlinks = categories
+    .filter((c) => ['klaer', 'sko', 'vesker', 'kjoler'].includes(c.slug))
+    .map(toCategoryLinks)
+
+  const navBarSidebarlinks = categories.slice(0, 10).map(toCategoryLinks)
 
   return (
     <CommerceProvider locale={locale}>
@@ -121,7 +132,7 @@ const Layout: React.FC<Props> = ({
         <Footer pages={pageProps.pages} />
         <ModalUI />
         <CheckoutProvider>
-          <SidebarUI links={navBarlinks} />
+          <SidebarUI links={navBarSidebarlinks} />
         </CheckoutProvider>
         <FeatureBar
           title="This site uses cookies to improve your experience. By clicking, you agree to our Privacy Policy."
