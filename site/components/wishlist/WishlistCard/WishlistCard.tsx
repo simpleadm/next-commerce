@@ -11,12 +11,12 @@ import type { Product } from '@commerce/types/product'
 import usePrice from '@framework/product/use-price'
 import useAddItem from '@framework/cart/use-add-item'
 import useRemoveItem from '@framework/wishlist/use-remove-item'
-import type { Wishlist } from '@commerce/types/wishlist'
+import type { WishlistItem } from '@commerce/types/wishlist'
 
 const placeholderImg = '/product-img-placeholder.svg'
 
 const WishlistCard: React.FC<{
-  item: Wishlist
+  item: WishlistItem
 }> = ({ item }) => {
   const product: Product = item.product
   const { price } = usePrice({
@@ -73,9 +73,7 @@ const WishlistCard: React.FC<{
       <div className={s.description}>
         <div className="flex-1 mb-6">
           <h3 className="text-2xl mb-2 -mt-1">
-            <Link href={`/product${product.path}`}>
-              <a>{product.name}</a>
-            </Link>
+            <Link href={`/product${product.path}`}>{product.name}</Link>
           </h3>
           <div className="mb-4">
             <Text html={product.description} />

@@ -41,8 +41,14 @@ const SignUpView: FC<Props> = () => {
       setLoading(false)
       closeModal()
     } catch ({ errors }) {
-      setMessage(errors[0].message)
+      console.error(errors)
+      if (errors instanceof Array) {
+        setMessage(errors.map((e: any) => e.message).join('<br/>'))
+      } else {
+        setMessage('Unexpected error')
+      }
       setLoading(false)
+      setDisabled(false)
     }
   }
 
@@ -70,7 +76,12 @@ const SignUpView: FC<Props> = () => {
       </div>
       <div className="flex flex-col space-y-4">
         {message && (
-          <div className="text-red border border-red p-3">{message}</div>
+          <div
+            className="text-red border border-red p-3"
+            dangerouslySetInnerHTML={{
+              __html: message,
+            }}
+          ></div>
         )}
         <Input placeholder="First Name" onChange={setFirstName} />
         <Input placeholder="Last Name" onChange={setLastName} />

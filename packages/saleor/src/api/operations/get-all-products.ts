@@ -12,7 +12,9 @@ type ReturnType = {
   products: Product[]
 }
 
-export default function getAllProductsOperation({ commerce }: OperationContext<Provider>) {
+export default function getAllProductsOperation({
+  commerce,
+}: OperationContext<Provider>) {
   async function getAllProducts({
     query = Query.ProductMany,
     variables,
@@ -37,22 +39,25 @@ export default function getAllProductsOperation({ commerce }: OperationContext<P
       { variables },
       {
         ...(locale && {
-          headers: {
-            'Accept-Language': locale,
-          },
+          'Accept-Language': locale,
         }),
       }
     )
 
     if (featured) {
       const products =
-        data.collection.products?.edges?.map(({ node: p }: ProductCountableEdge) => normalizeProduct(p)) ?? []
+        data?.collection.products?.edges?.map(
+          ({ node: p }: ProductCountableEdge) => normalizeProduct(p)
+        ) ?? []
 
       return {
         products,
       }
     } else {
-      const products = data.products?.edges?.map(({ node: p }: ProductCountableEdge) => normalizeProduct(p)) ?? []
+      const products =
+        data?.products?.edges?.map(({ node: p }: ProductCountableEdge) =>
+          normalizeProduct(p)
+        ) ?? []
 
       return {
         products,

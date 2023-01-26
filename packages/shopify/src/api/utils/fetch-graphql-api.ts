@@ -1,5 +1,4 @@
 import type { GraphQLFetcher } from '@vercel/commerce/api'
-import fetch from './fetch'
 
 import { API_URL, API_TOKEN } from '../../const'
 import { getError } from '../../utils/handle-fetch-response'
@@ -7,15 +6,14 @@ import { getError } from '../../utils/handle-fetch-response'
 const fetchGraphqlApi: GraphQLFetcher = async (
   query: string,
   { variables } = {},
-  fetchOptions
+  headers?: HeadersInit
 ) => {
   try {
     const res = await fetch(API_URL, {
-      ...fetchOptions,
       method: 'POST',
       headers: {
         'X-Shopify-Storefront-Access-Token': API_TOKEN!,
-        ...fetchOptions?.headers,
+        ...headers,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -35,7 +33,7 @@ const fetchGraphqlApi: GraphQLFetcher = async (
     throw getError(
       [
         {
-          message: `${err} \n Most likely related to an unexpected output. e.g the store might be protected with password or not available.`,
+          message: `${err} \n Most likely related to an unexpected output. E.g: NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN & NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN might be incorect.`,
         },
       ],
       500

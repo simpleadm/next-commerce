@@ -12,7 +12,9 @@ type ReturnType = {
   product: any
 }
 
-export default function getProductOperation({ commerce }: OperationContext<Provider>) {
+export default function getProductOperation({
+  commerce,
+}: OperationContext<Provider>) {
   async function getProduct({
     query = Query.ProductOneBySlug,
     variables,
@@ -30,15 +32,13 @@ export default function getProductOperation({ commerce }: OperationContext<Provi
       { variables },
       {
         ...(locale && {
-          headers: {
-            'Accept-Language': locale,
-          },
+          'Accept-Language': locale,
         }),
       }
     )
 
     return {
-      product: data?.product ? normalizeProduct(data.product) : null,
+      product: data && data.product ? normalizeProduct(data.product) : null,
     }
   }
 

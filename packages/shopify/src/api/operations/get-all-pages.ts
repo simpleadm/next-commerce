@@ -9,7 +9,7 @@ import {
 } from '../../../schema'
 import { normalizePages } from '../../utils'
 import type { ShopifyConfig, Provider } from '..'
-import type { GetAllPagesOperation, Page } from '../../types/page'
+import type { GetAllPagesOperation, Page } from '@vercel/commerce/types/page'
 import getAllPagesQuery from '../../utils/queries/get-all-pages-query'
 
 export default function getAllPagesOperation({
@@ -51,9 +51,7 @@ export default function getAllPagesOperation({
       },
       {
         ...(locale && {
-          headers: {
-            'Accept-Language': locale,
-          },
+          'Accept-Language': locale,
         }),
       }
     )

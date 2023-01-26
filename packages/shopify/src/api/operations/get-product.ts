@@ -2,7 +2,7 @@ import type {
   OperationContext,
   OperationOptions,
 } from '@vercel/commerce/api/operations'
-import { GetProductOperation } from '../../types/product'
+import { GetProductOperation } from '@vercel/commerce/types/product'
 import { normalizeProduct, getProductQuery } from '../../utils'
 import type { ShopifyConfig, Provider } from '..'
 import {
@@ -48,9 +48,7 @@ export default function getProductOperation({
       },
       {
         ...(locale && {
-          headers: {
-            'Accept-Language': locale,
-          },
+          'Accept-Language': locale,
         }),
       }
     )

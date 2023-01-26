@@ -54,6 +54,7 @@ interface Props {
     pages?: Page[]
     categories: Category[]
   }
+  children?: React.ReactNode
 }
 
 const ModalView: React.FC<{ modalView: string; closeModal(): any }> = ({

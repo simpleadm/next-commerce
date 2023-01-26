@@ -31,7 +31,7 @@ const UserNav: React.FC<{
     openSidebar,
   } = useUI()
 
-  const itemsCount = data?.lineItems.reduce(countItem, 0) ?? 0
+  const itemsCount = data?.lineItems?.reduce(countItem, 0) ?? 0
   const DropdownTrigger = isCustomerLoggedIn
     ? DropdownTriggerInst
     : React.Fragment
@@ -59,7 +59,7 @@ const UserNav: React.FC<{
         )}
         {process.env.COMMERCE_WISHLIST_ENABLED && (
           <li className={s.item}>
-            <Link href="/wishlist">
+            <Link href="/wishlist" legacyBehavior>
               <a onClick={closeSidebarIfPresent} aria-label="Wishlist">
                 <Heart />
               </a>

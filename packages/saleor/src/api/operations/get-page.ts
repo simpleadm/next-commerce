@@ -8,7 +8,9 @@ export type Page = any
 
 export type GetPageResult<T extends { page?: any } = { page?: Page }> = T
 
-export default function getPageOperation({ commerce }: OperationContext<Provider>) {
+export default function getPageOperation({
+  commerce,
+}: OperationContext<Provider>) {
   async function getPage({
     query = Query.PageOne,
     variables,
@@ -21,28 +23,26 @@ export default function getPageOperation({ commerce }: OperationContext<Provider
   }): Promise<GetPageResult> {
     const { fetch, locale = 'en-US' } = commerce.getConfig(config)
 
-    const {
-      data: { page },
-    } = await fetch(
+    const { data } = await fetch(
       query,
       { variables },
       {
         ...(locale && {
-          headers: {
-            'Accept-Language': locale,
-          },
+          'Accept-Language': locale,
         }),
       }
     )
 
     return {
-      page: page
-        ? {
-            ...page,
-            name: page.title,
-            url: `/${locale}/${page.slug}`,
-          }
-        : null,
+      page:
+        data && data.page
+          ? {
+              ...data.page,
+              name: data.page.title,
+              body: data.page.content || '',
+              url: `/${locale}/${data.page.slug}`,
+            }
+          : null,
     }
   }
 
